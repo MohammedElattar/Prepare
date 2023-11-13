@@ -19,3 +19,6 @@ php artisan vendor:publish --tag=elattar-prepare --force
 ```
 
 - finally copy middlewares, files, dump composer
+```shell
+php artisan elattar:publish-prepare-files
+```
