@@ -34,6 +34,6 @@
             "Calculator": "Elattar\\Prepare\\Facades\\Calculator"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "version": "1.0.0"
 }
