@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Process;
 
 class PrepareCommand extends Command
 {
-    private string $workingDirectory = '/var/www/html/test';
+    private string $workingDirectory = __DIR__.'/../../../../../../';
 
     /**
      * The name and signature of the console command.
