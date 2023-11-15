@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method \Elattar\Prepare\Helpers\Composer push(string $keyLevels, mixed $value)
  * @method \Elattar\Prepare\Helpers\Composer write()
  * @method static dumpAutoload()
+ * @method static update()
  *
  * @see \Elattar\Prepare\Helpers\Composer
  */

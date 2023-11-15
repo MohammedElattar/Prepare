@@ -3,6 +3,12 @@
     "description": "Configure Newly Created Laravel Projects",
     "type": "library",
     "license": "MIT",
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^8.0",
+        "phpunit/phpunit": "10.4.x-dev",
+        "laravel/pint": "dev-main"
+    },
     "autoload": {
         "psr-4": {
             "Elattar\\Prepare\\": "src/"
@@ -19,19 +25,11 @@
             "email": "mohammedattar0100020@gmail.com"
         }
     ],
-    "require-dev": {
-        "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "10.4.x-dev",
-        "laravel/pint": "dev-main"
-    },
     "extra": {
         "laravel": {
             "providers": [
                 "Elattar\\Prepare\\Providers\\PrepareServiceProvider"
             ]
-        },
-        "aliases": {
-            "Calculator": "Elattar\\Prepare\\Facades\\Calculator"
         }
     },
     "minimum-stability": "stable"

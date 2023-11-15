@@ -24,6 +24,7 @@ class PrepareServiceProvider extends ServiceProvider
             __DIR__.'/../../config/permission.php' => config_path('permission.php'),
             __DIR__.'/../../stubs' => base_path('stubs'),
             __DIR__.'/../../lang' => base_path('lang'),
+            __DIR__.'/../Providers/AppServiceProvider.php' => base_path('app/Providers/AppServiceProvider.php'),
         ],
             'elattar-prepare'
         );

@@ -10,6 +10,8 @@ use Laravel\Prompts\Output\ConsoleOutput;
 
 class PrepareCommand extends Command
 {
+    private string $workingDirectory = '/var/www/html/test';
+
     /**
      * The name and signature of the console command.
      *
@@ -24,10 +26,9 @@ class PrepareCommand extends Command
      */
     public function handle()
     {
-        //TODO install dev packages
         $this->installDependencies();
-
         $this->composerChanges();
+        $this->info('Done');
     }
 
     private function installDependencies(): void
@@ -41,98 +42,46 @@ class PrepareCommand extends Command
 
     private function telescope(): void
     {
-        $bufferedOutput = new ConsoleOutput();
-
-        $this->info('Installing Telescope .....');
-
-        $telescopeProcess = Process::run('composer require laravel/telescope --dev');
-
-        $this->info($telescopeProcess->output());
-
-        if ($telescopeProcess->successful()) {
-            Artisan::call('vendor:publish', [
-                '--tag' => 'telescope-assets',
-                '--force' => true,
-            ],
-                outputBuffer: $bufferedOutput
-            );
-
-            //Artisan::call('telescope:install', outputBuffer: $bufferedOutput);
-
-            Artisan::call(
-                'migrate',
-                outputBuffer: $bufferedOutput
-            );
-
-            $this->info('Telescope Installed Successfully.');
-        }
+        $this->info('Preparing Telescope .....');
+        $this->info(Process::run('composer require laravel/telescope --working-dir='. $this->workingDirectory)->output());
+        $this->info(Process::run("php $this->workingDirectory/artisan telescope:install")->output());
+        $this->info(Process::run("php $this->workingDirectory/artisan migrate")->output());
     }
 
     private function ideHelper(): void
     {
-        $bufferedOutput = new ConsoleOutput();
-
         $this->info('Installing Ide Helper .....');
-
-        $process = Process::run('composer require --dev barryvdh/laravel-ide-helper');
-
-        if ($process->successful()) {
-            Artisan::call('vendor:publish', [
-                '--provider' => 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-            ],
-                outputBuffer: $bufferedOutput
-            );
-
-            $this->info('Ide Helper Installed Successfully');
-        }
+        $this->info(Process::run('composer require --dev barryvdh/laravel-ide-helper --working-dir='.$this->workingDirectory)->output());
     }
 
-    private function laravelModules()
+    private function laravelModules(): void
     {
-        $outputBuffer = new ConsoleOutput();
-
-        Process::run('composer require nwidart/laravel-nwidart-stubs');
-
-        Artisan::call('vendor:publish', [
-            '--provider' => "Nwidart\Modules\LaravelModulesServiceProvider",
-        ],
-            $outputBuffer
-        );
+        $this->info('Installing Laravel Modules ......');
+        $this->info(Process::run("composer require nwidart/laravel-modules --working-dir=$this->workingDirectory")->output());
     }
 
     private function fastPaginate()
     {
         $this->info('Installing Fast Paginate ....');
-
-        $process = Process::run('composer require hammerstone/fast-paginate');
-
-        if ($process->successful()) {
-            $this->info($process->output());
-            $this->info('Installed Successfully');
-        }
-
+        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir='. $this->workingDirectory)->output());
     }
 
     private function logViewer(): void
     {
         $this->info('installing Log Viewer ....');
-
-        Process::run('composer require rap2hpoutre/laravel-log-viewer');
-
-        $this->info('Log Viewer Installation Finished');
+        $this->info(Process::run('composer require opcodesio/log-viewer --dev --working-dir='.$this->workingDirectory)->output());
     }
     private function composerChanges(): void
     {
         $this->info('Making Composer Changes....');
 
         Composer::start()
-            ->push('extra.laravel.dont-discover', 'laravel/telescope', true)
-            ->push('extra.laravel.dont-discover', 'barryvdh/laravel-ide-helper', true)
             ->push('autoload.psr-4.Modules\\', 'Modules/')
             ->write();
 
         $this->info('Reloading Composer....');
 
         Composer::dumpAutoload();
+        Composer::update();
     }
 }
