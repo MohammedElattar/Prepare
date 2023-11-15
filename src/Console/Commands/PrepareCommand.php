@@ -4,9 +4,7 @@ namespace Elattar\Prepare\Console\Commands;
 
 use Elattar\Prepare\Facades\Composer;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Process;
-use Laravel\Prompts\Output\ConsoleOutput;
 
 class PrepareCommand extends Command
 {
@@ -43,7 +41,7 @@ class PrepareCommand extends Command
     private function telescope(): void
     {
         $this->info('Preparing Telescope .....');
-        $this->info(Process::run('composer require laravel/telescope --working-dir='. $this->workingDirectory)->output());
+        $this->info(Process::run('composer require laravel/telescope --working-dir='.$this->workingDirectory)->output());
         $this->info(Process::run("php $this->workingDirectory/artisan telescope:install")->output());
         $this->info(Process::run("php $this->workingDirectory/artisan migrate")->output());
     }
@@ -63,7 +61,7 @@ class PrepareCommand extends Command
     private function fastPaginate()
     {
         $this->info('Installing Fast Paginate ....');
-        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir='. $this->workingDirectory)->output());
+        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir='.$this->workingDirectory)->output());
     }
 
     private function logViewer(): void
@@ -71,6 +69,7 @@ class PrepareCommand extends Command
         $this->info('installing Log Viewer ....');
         $this->info(Process::run('composer require opcodesio/log-viewer --dev --working-dir='.$this->workingDirectory)->output());
     }
+
     private function composerChanges(): void
     {
         $this->info('Making Composer Changes....');
