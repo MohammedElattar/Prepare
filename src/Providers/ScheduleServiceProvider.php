@@ -1,6 +1,6 @@
 <?php
 
-namespace DrCode\Prepare\Providers;
+namespace Elattar\Prepare\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
