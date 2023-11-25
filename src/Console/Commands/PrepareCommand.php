@@ -36,6 +36,7 @@ class PrepareCommand extends Command
         $this->laravelModules();
         $this->fastPaginate();
         $this->logViewer();
+        $this->laravelBackup();
     }
 
     private function telescope(): void
@@ -58,7 +59,7 @@ class PrepareCommand extends Command
         $this->info(Process::run("composer require nwidart/laravel-modules --working-dir=$this->workingDirectory")->output());
     }
 
-    private function fastPaginate()
+    private function fastPaginate(): void
     {
         $this->info('Installing Fast Paginate ....');
         $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir='.$this->workingDirectory)->output());
@@ -68,6 +69,12 @@ class PrepareCommand extends Command
     {
         $this->info('installing Log Viewer ....');
         $this->info(Process::run('composer require opcodesio/log-viewer --dev --working-dir='.$this->workingDirectory)->output());
+    }
+
+    public function laravelBackup(): void
+    {
+        $this->info('Installing Laravel Backup .....');
+        $this->info(Process::run('composer require spatie/laravel-backup --working-dir='.$this->workingDirectory)->output());
     }
 
     private function composerChanges(): void
