@@ -72,14 +72,14 @@ class Composer
 
     public function dumpAutoload(): bool
     {
-        $process = Process::run('composer dump-autoload');
+        $process = Process::run('composer dump-autoload --working-dir=' . base_path());
 
         return $process->successful();
     }
 
     public function update(): bool
     {
-        $process = Process::run('composer update');
+        $process = Process::run('composer update --working-dir=' . base_path());
 
         return $process->successful();
     }

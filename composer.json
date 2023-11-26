@@ -1,36 +1,37 @@
 {
-    "name": "elattar/prepare",
-    "description": "Configure Newly Created Laravel Projects",
-    "type": "library",
-    "license": "MIT",
-    "require": {},
-    "require-dev": {
-        "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "10.4.x-dev",
-        "laravel/pint": "dev-main"
-    },
-    "autoload": {
-        "psr-4": {
-            "Elattar\\Prepare\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Elattar\\Prepare\\Tests\\": "tests/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Mohamed Attar",
-            "email": "mohammedattar0100020@gmail.com"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Elattar\\Prepare\\Providers\\PrepareServiceProvider"
-            ]
-        }
-    },
-    "minimum-stability": "stable"
+  "name": "elattar/prepare",
+  "description": "Configure Newly Created Laravel Projects",
+  "type": "library",
+  "license": "MIT",
+  "require": {},
+  "require-dev": {
+    "orchestra/testbench": "^8.0",
+    "phpunit/phpunit": "10.4.x-dev",
+    "laravel/pint": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "Elattar\\Prepare\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Elattar\\Prepare\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Mohamed Attar",
+      "email": "mohammedattar0100020@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Elattar\\Prepare\\Providers\\PrepareServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "version": "1"
 }

@@ -9,7 +9,7 @@ class ResourceHelper
         return $object->relationLoaded($relationName)
             ? (
                 $object->{$relationName}->first()->original_url
-                ?? asset('/storage/default/'.$defaultImageName)
+                ?? asset('/storage/default/' . $defaultImageName)
             )
             : null;
     }
@@ -22,13 +22,14 @@ class ResourceHelper
             $object->{$relationName}->map(
                 function ($file) use (&$images) {
                     $images[] = ['id' => $file->id, 'url' => $file->original_url];
-                });
+                }
+            );
 
-            if (! $images) {
+            if (!$images) {
                 $images = [
-                    ['id' => 0, 'url' => asset('/storage/default/'.$defaultFileName)],
-                    ['id' => 0, 'url' => asset('/storage/default/'.$defaultFileName)],
-                    ['id' => 0, 'url' => asset('/storage/default/'.$defaultFileName)],
+                    ['id' => 0, 'url' => asset('/storage/default/' . $defaultFileName)],
+                    ['id' => 0, 'url' => asset('/storage/default/' . $defaultFileName)],
+                    ['id' => 0, 'url' => asset('/storage/default/' . $defaultFileName)],
                 ];
             }
 

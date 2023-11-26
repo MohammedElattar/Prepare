@@ -22,7 +22,7 @@ class ValidationRuleHelper
     {
         $ignoredColumn = $inUpdate ? $ignoredColumn : null;
 
-        return "unique:$table,$column".($inUpdate ? (",$idValue,$ignoredColumn") : '');
+        return "unique:$table,$column" . ($inUpdate ? (",$idValue,$ignoredColumn") : '');
     }
 
     public static function sameLoggedUserPassword(array $replaceDefaultRules = []): array
@@ -35,7 +35,7 @@ class ValidationRuleHelper
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
-    protected static function replaceDefaultRules(array $rules, array $replaceDefaultRules): array
+    public static function replaceDefaultRules(array $rules, array $replaceDefaultRules): array
     {
         foreach ($replaceDefaultRules as $ruleKey => $ruleValue) {
             $rules[$ruleKey] = $ruleValue;
@@ -176,7 +176,7 @@ class ValidationRuleHelper
     {
         $rules = [
             'required' => 'required',
-            'date_format' => 'date_format:'.DateHelper::defaultDateFormat(),
+            'date_format' => 'date_format:' . DateHelper::defaultDateFormat(),
             'after_or_equal' => 'after_or_equal:today',
         ];
 
@@ -187,7 +187,7 @@ class ValidationRuleHelper
     {
         $rules = [
             'required' => 'required',
-            'date_format' => 'date_format:'.DateHelper::defaultDateTimeFormat(),
+            'date_format' => 'date_format:' . DateHelper::defaultDateTimeFormat(),
         ];
 
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
@@ -197,7 +197,7 @@ class ValidationRuleHelper
     {
         $rules = [
             'required' => 'required',
-            'date_format' => 'date_format:'.DateHelper::defaultYearFormat(),
+            'date_format' => 'date_format:' . DateHelper::defaultYearFormat(),
         ];
 
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
@@ -207,7 +207,7 @@ class ValidationRuleHelper
     {
         $rules = [
             'required' => 'required',
-            'date_format' => 'date_format:'.DateHelper::defaultTimeFormat(),
+            'date_format' => 'date_format:' . DateHelper::defaultTimeFormat(),
         ];
 
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
@@ -391,7 +391,7 @@ class ValidationRuleHelper
         $item = $query
             ->when(
                 $modelID,
-                fn ($innerQuery) => $innerQuery->where('id', '<>', $modelID)
+                fn($innerQuery) => $innerQuery->where('id', '<>', $modelID)
             )
             ->first();
 

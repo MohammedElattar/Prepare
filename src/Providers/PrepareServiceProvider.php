@@ -16,17 +16,10 @@ class PrepareServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../Http/Middleware/RedirectIfAuthenticated.php' => base_path('app/Http/Middleware/RedirectIfAuthenticated.php'),
-            __DIR__.'/../Helpers/translator.php' => base_path('app/Helpers/translator.php'),
-            __DIR__.'/../../config/cors.php' => config_path('cors.php'),
-            __DIR__.'/../../config/ide-helper.php' => config_path('ide-helper.php'),
-            __DIR__.'/../../config/modules.php' => config_path('modules.php'),
-            __DIR__.'/../../config/permission.php' => config_path('permission.php'),
-            __DIR__.'/../../stubs' => base_path('stubs'),
-            __DIR__.'/../../lang' => base_path('lang'),
-            __DIR__.'/../Providers/AppServiceProvider.php' => base_path('app/Providers/AppServiceProvider.php'),
-        ],
+        $this->publishes(
+            [
+                __DIR__ . '/../../assets' => base_path(),
+            ],
             'elattar-prepare'
         );
     }

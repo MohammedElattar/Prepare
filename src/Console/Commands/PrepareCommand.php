@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\Process;
 
 class PrepareCommand extends Command
 {
-    private string $workingDirectory = __DIR__.'/../../../../../../';
+    private string $workingDirectory;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->workingDirectory = base_path();
+    }
     /**
      * The name and signature of the console command.
      *
@@ -42,7 +47,7 @@ class PrepareCommand extends Command
     private function telescope(): void
     {
         $this->info('Preparing Telescope .....');
-        $this->info(Process::run('composer require laravel/telescope --working-dir='.$this->workingDirectory)->output());
+        $this->info(Process::run('composer require laravel/telescope --working-dir=' . $this->workingDirectory)->output());
         $this->info(Process::run("php $this->workingDirectory/artisan telescope:install")->output());
         $this->info(Process::run("php $this->workingDirectory/artisan migrate")->output());
     }
@@ -50,7 +55,7 @@ class PrepareCommand extends Command
     private function ideHelper(): void
     {
         $this->info('Installing Ide Helper .....');
-        $this->info(Process::run('composer require --dev barryvdh/laravel-ide-helper --working-dir='.$this->workingDirectory)->output());
+        $this->info(Process::run('composer require --dev barryvdh/laravel-ide-helper --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function laravelModules(): void
@@ -62,19 +67,19 @@ class PrepareCommand extends Command
     private function fastPaginate(): void
     {
         $this->info('Installing Fast Paginate ....');
-        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir='.$this->workingDirectory)->output());
+        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function logViewer(): void
     {
         $this->info('installing Log Viewer ....');
-        $this->info(Process::run('composer require opcodesio/log-viewer --dev --working-dir='.$this->workingDirectory)->output());
+        $this->info(Process::run('composer require opcodesio/log-viewer --dev --working-dir=' . $this->workingDirectory)->output());
     }
 
     public function laravelBackup(): void
     {
         $this->info('Installing Laravel Backup .....');
-        $this->info(Process::run('composer require spatie/laravel-backup --working-dir='.$this->workingDirectory)->output());
+        $this->info(Process::run('composer require spatie/laravel-backup --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function composerChanges(): void

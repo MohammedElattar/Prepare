@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class Composer extends Facade
 {
-    protected static function getFacadeAccessor(): string
+    public static function getFacadeAccessor(): string
     {
         return \Elattar\Prepare\Helpers\Composer::class;
     }

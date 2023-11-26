@@ -181,7 +181,7 @@ class ValidationMessageHelper
         return static::replaceDefaultErrorMessages($messages, $keyName, $replaceDefaultErrorMessages);
     }
 
-    protected static function replaceDefaultErrorMessages(
+    public static function replaceDefaultErrorMessages(
         array $messages,
         string $keyName,
         array $replaceDefaultErrorMessages = [],

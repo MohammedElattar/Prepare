@@ -8,7 +8,7 @@ trait ModelExists
     {
         $yourModel = $model->whereId($modelId)->first();
 
-        if (! $yourModel) {
+        if (!$yourModel) {
             $errors[$errorKey] = translate_error_message($messageKey, 'not_exists');
 
             return $errors;

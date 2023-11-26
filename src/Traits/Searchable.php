@@ -16,7 +16,7 @@ trait Searchable
     {
         return $builder->when(
             $value,
-            fn ($innerQuery) => $innerQuery->where($foreignKeyColumn, $value)
+            fn($innerQuery) => $innerQuery->where($foreignKeyColumn, $value)
         );
     }
 }

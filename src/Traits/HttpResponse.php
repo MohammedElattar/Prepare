@@ -2,7 +2,6 @@
 
 namespace Elattar\Prepare\Traits;
 
-use Elattar\Prepare\Helpers\RequestHelper;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
@@ -16,54 +15,48 @@ trait HttpResponse
     /**
      * Success Response.
      */
-    public function okResponse(
+    public function successResponse(
         mixed $data = null,
         string $message = 'Success',
-        int $code = Response::HTTP_OK
+        int $code = Response::HTTP_OK,
+        bool $showToast = null,
     ): JsonResponse {
+        $showToast = !is_null($showToast) ? $showToast : request()->method() != 'GET';
+
         return response()->json([
             'data' => $data,
             'message' => $message,
             'type' => 'success',
             'code' => $code,
-            'showToast' => request()->method() != 'GET',
+            'showToast' => $showToast,
         ], $code);
     }
 
-    /**
-     * Response With Cookie.
-     */
-    public function responseWithCookie(
-        mixed $cookie,
+    public function okResponse(
         mixed $data = null,
-        string $message = 'message',
-        string $type = 'success',
-        int $code = 200
+        string $message = 'Success',
+        int $code = Response::HTTP_OK,
+        bool $showToast = null,
     ): JsonResponse {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'type' => $type,
-            'code' => $code,
-        ], $code)->withCookie($cookie);
+        return $this->successResponse(
+            $data,
+            $message,
+            $code,
+            $showToast,
+        );
     }
 
     public function unauthenticatedResponse(
         string $message = 'You Are not authenticated',
         int $code = Response::HTTP_UNAUTHORIZED,
-        $data = null
+        $data = null,
+        bool $showToast = null,
     ): JsonResponse {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'type' => 'error',
-            'code' => $code,
-        ], $code);
+        return $this->errorResponse($data, $code, $message, $showToast);
     }
 
     /**
      *  NotAuthenticated Response In Handler.
-     *
      *
      * @throws AuthenticationException
      */
@@ -78,14 +71,10 @@ trait HttpResponse
     public function resourceResponse(
         $data,
         string $message = 'Data Fetched Successfully',
-        int $code = 200
+        int $code = 200,
+        bool $showToast = null,
     ): JsonResponse {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'code' => $code,
-            'type' => 'success',
-        ], $code);
+        return $this->successResponse($data, $message, $code, $showToast);
     }
 
     public function paginatedResponse(
@@ -122,9 +111,10 @@ trait HttpResponse
     public function forbiddenResponse(
         string $message = 'Access Denied',
         mixed $data = null,
-        int $code = Response::HTTP_FORBIDDEN
+        int $code = Response::HTTP_FORBIDDEN,
+        bool $showToast = null,
     ): JsonResponse {
-        return $this->errorResponse($data, $code, $message);
+        return $this->errorResponse($data, $code, $message, $showToast);
     }
 
     /**
@@ -134,27 +124,20 @@ trait HttpResponse
         $data = null,
         int $code = Response::HTTP_NOT_FOUND,
         string $message = 'Error Occurred',
-        array $replaceDefaultKeys = []
+        bool $showToast = null,
     ): JsonResponse {
         $response = [
             'data' => $data,
             'message' => $message,
             'type' => 'error',
             'code' => $code,
+            'showToast' => $showToast,
         ];
-        foreach ($replaceDefaultKeys as $key => $value) {
-            $response[$key] = $value;
-        }
 
         return response()->json(
             $response,
             $response['code']
         );
-    }
-
-    public function noContentResponse(): \Illuminate\Http\Response
-    {
-        return response()->noContent();
     }
 
     public function notFoundResponse(
@@ -168,15 +151,15 @@ trait HttpResponse
     public function createdResponse(
         array|JsonResource $data = null,
         string $message = 'Resource Created Successfully',
-        int $code = Response::HTTP_CREATED
+        int $code = Response::HTTP_CREATED,
+        ?bool $showToast = true,
     ): JsonResponse {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'code' => $code,
-            'type' => 'success',
-            'showToast' => true,
-        ], $code);
+        return $this->successResponse(
+            $data,
+            $message,
+            $code,
+            $showToast
+        );
     }
 
     /**
@@ -185,7 +168,6 @@ trait HttpResponse
     public function throwValidationException(
         Validator $validator,
         array $error = null,
-        bool $showFirstErrorOnly = true
     ): void {
         $errors = $error ?: $validator->errors()->toArray();
         $errorsKeys = array_keys($errors);
@@ -213,23 +195,11 @@ trait HttpResponse
         int $code = Response::HTTP_UNPROCESSABLE_ENTITY,
         string $message = 'validation errors',
     ): JsonResponse {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'type' => 'error',
-            'code' => $code,
-        ], $code);
+        return $this->errorResponse($data, $code, $message);
     }
 
     public function unauthorizedResponse($data): JsonResponse
     {
         return $this->errorResponse($data, Response::HTTP_UNAUTHORIZED, 'Wrong Credentials');
-    }
-
-    public function resourceOrPagination($collection)
-    {
-        return RequestHelper::isFirstPartyFrontend()
-            ? $collection
-            : $this->resourceResponse($collection);
     }
 }

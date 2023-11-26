@@ -7,12 +7,10 @@ use Illuminate\Support\ServiceProvider;
 
 class ScheduleServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
-        if($this->app->runningInConsole())
-        {
-            $this->app->booted(function(){
+        if ($this->app->runningInConsole()) {
+            $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
 
                 $schedule->command('backup:clean')->daily()->at('01:00');
@@ -20,6 +18,7 @@ class ScheduleServiceProvider extends ServiceProvider
             });
         }
     }
+
     public function register()
     {
 
