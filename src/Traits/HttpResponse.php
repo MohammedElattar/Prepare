@@ -20,16 +20,17 @@ trait HttpResponse
         string $message = 'Success',
         int $code = Response::HTTP_OK,
         bool $showToast = null,
+        array $additional = [],
     ): JsonResponse {
         $showToast = !is_null($showToast) ? $showToast : request()->method() != 'GET';
 
-        return response()->json([
+        return response()->json(array_merge([
             'data' => $data,
             'message' => $message,
             'type' => 'success',
             'code' => $code,
             'showToast' => $showToast,
-        ], $code);
+        ], $additional), $code);
     }
 
     public function okResponse(
@@ -37,12 +38,14 @@ trait HttpResponse
         string $message = 'Success',
         int $code = Response::HTTP_OK,
         bool $showToast = null,
+        array $additional = [],
     ): JsonResponse {
         return $this->successResponse(
             $data,
             $message,
             $code,
             $showToast,
+            $additional,
         );
     }
 
@@ -51,8 +54,15 @@ trait HttpResponse
         int $code = Response::HTTP_UNAUTHORIZED,
         $data = null,
         bool $showToast = null,
+        array $additional = [],
     ): JsonResponse {
-        return $this->errorResponse($data, $code, $message, $showToast);
+        return $this->errorResponse(
+            $data,
+            $code,
+            $message,
+            $showToast,
+            $additional,
+        );
     }
 
     /**
@@ -73,8 +83,15 @@ trait HttpResponse
         string $message = 'Data Fetched Successfully',
         int $code = 200,
         bool $showToast = null,
+        array $additional = [],
     ): JsonResponse {
-        return $this->successResponse($data, $message, $code, $showToast);
+        return $this->successResponse(
+            $data,
+            $message,
+            $code,
+            $showToast,
+            $additional,
+        );
     }
 
     public function paginatedResponse(
@@ -113,8 +130,15 @@ trait HttpResponse
         mixed $data = null,
         int $code = Response::HTTP_FORBIDDEN,
         bool $showToast = null,
+        array $additional = []
     ): JsonResponse {
-        return $this->errorResponse($data, $code, $message, $showToast);
+        return $this->errorResponse(
+            $data,
+            $code,
+            $message,
+            $showToast,
+            $additional,
+        );
     }
 
     /**
@@ -125,17 +149,18 @@ trait HttpResponse
         int $code = Response::HTTP_NOT_FOUND,
         string $message = 'Error Occurred',
         bool $showToast = null,
+        array $additional = [],
     ): JsonResponse {
         $response = [
             'data' => $data,
             'message' => $message,
             'type' => 'error',
             'code' => $code,
-            'showToast' => $showToast,
+            'showToast' => is_bool($showToast) ? $showToast : request()->method() != 'GET',
         ];
 
         return response()->json(
-            $response,
+            array_merge($response, $additional),
             $response['code']
         );
     }
@@ -143,22 +168,32 @@ trait HttpResponse
     public function notFoundResponse(
         string $message = 'Not Found',
         array $data = null,
-        int $code = Response::HTTP_NOT_FOUND
+        int $code = Response::HTTP_NOT_FOUND,
+        bool $showToast = true,
+        array $additional = [],
     ): JsonResponse {
-        return $this->errorResponse($data, $code, $message);
+        return $this->errorResponse(
+            $data,
+            $code,
+            $message,
+            $showToast,
+            $additional,
+        );
     }
 
     public function createdResponse(
         array|JsonResource $data = null,
         string $message = 'Resource Created Successfully',
         int $code = Response::HTTP_CREATED,
-        ?bool $showToast = true,
+        bool $showToast = true,
+        array $additional = [],
     ): JsonResponse {
         return $this->successResponse(
             $data,
             $message,
             $code,
-            $showToast
+            $showToast,
+            $additional,
         );
     }
 
@@ -194,8 +229,16 @@ trait HttpResponse
         mixed $data = null,
         int $code = Response::HTTP_UNPROCESSABLE_ENTITY,
         string $message = 'validation errors',
+        bool $showToast = true,
+        array $additional = [],
     ): JsonResponse {
-        return $this->errorResponse($data, $code, $message);
+        return $this->errorResponse(
+            $data,
+            $code,
+            $message,
+            $showToast,
+            $additional,
+        );
     }
 
     public function unauthorizedResponse($data): JsonResponse
