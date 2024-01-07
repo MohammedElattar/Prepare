@@ -18,4 +18,9 @@ class PaginationHelper
     {
         return $builder->fastPaginate(self::paginationCountPerPage());
     }
+
+    public function getCurrentPage()
+    {
+        return request('page') ?: 1;
+    }
 }
