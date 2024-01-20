@@ -16,12 +16,12 @@ class DateHelper
 
     public static function defaultDateTimeFormat(): string
     {
-        return 'Y-m-d H:i';
+        return 'Y-m-d h:i';
     }
 
     public static function amPmFormat()
     {
-        return 'Y-m-d H:i A';
+        return 'Y-m-d h:i a';
     }
 
     public static function defaultDateFormat(): string
@@ -43,7 +43,7 @@ class DateHelper
 
     public static function defaultTimeFormat()
     {
-        return 'H:i';
+        return 'h:i';
     }
 
     public static function formatTime($time = null)

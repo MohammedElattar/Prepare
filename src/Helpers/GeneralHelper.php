@@ -20,7 +20,7 @@ class GeneralHelper
         return $middlewares;
     }
 
-    public static function authMiddleware()
+    public static function authMiddleware(): string
     {
         return 'auth:sanctum';
     }
