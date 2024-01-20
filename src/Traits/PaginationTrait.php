@@ -2,7 +2,7 @@
 
 namespace Elattar\Prepare\Traits;
 
-use Elattar\Prepare\Helpers\PaginationHelper;
+use App\Helpers\PaginationHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

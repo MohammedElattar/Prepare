@@ -9,7 +9,7 @@ class PaginationHelper
 {
     public static function paginationCountPerPage(): int
     {
-        $count = request('per_page') ?: 5;
+        $count = request()->input('per_page') ?: 5;
 
         return ($count >= 5 && $count <= 100) ? $count : 5;
     }
@@ -21,6 +21,6 @@ class PaginationHelper
 
     public static function getCurrentPage()
     {
-        return request('page') ?: 1;
+        return request()->input('page') ?: 1;
     }
 }

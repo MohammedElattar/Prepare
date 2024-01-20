@@ -6,7 +6,6 @@
   "require": {},
   "require-dev": {
     "orchestra/testbench": "^8.0",
-    "phpunit/phpunit": "10.5",
     "laravel/pint": "dev-main"
   },
   "autoload": {
@@ -32,5 +31,6 @@
       ]
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "version": "2.5"
 }
