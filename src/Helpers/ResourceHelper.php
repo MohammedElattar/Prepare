@@ -4,17 +4,17 @@ namespace Elattar\Prepare\Helpers;
 
 class ResourceHelper
 {
-    public static function getFirstMediaOriginalUrl($object, string $relationName = 'avatar', string $defaultImageName = 'store.png'): ?string
+    public static function getMedia($collectionName, $thisValue, string $relationName = 'mediaPaths', string $defaultFile = 'store.png', bool $shouldReturnDefaultMedia = true)
     {
-        return $object->relationLoaded($relationName)
-            ? (
-                $object->{$relationName}->first()->original_url
-                ?? asset('/storage/default/' . $defaultImageName)
-            )
-            : null;
+        $media = $thisValue->{$relationName}[
+        $thisValue->{$relationName}->search(fn ($item) => $item->collection_name == $collectionName)
+        ]
+            ->original_url ?? null;
+
+        return $media ?: ($shouldReturnDefaultMedia ? asset('/storage/default/store.png') : null);
     }
 
-    public static function getImagesObject($object, string $relationName, string $defaultFileName = 'store.png')
+    public static function getImagesObject($object, string $relationName, string $defaultFileName = 'store.png', bool $shouldReturnDefault = true)
     {
         if ($object->relationLoaded($relationName)) {
             $images = [];
@@ -25,7 +25,7 @@ class ResourceHelper
                 }
             );
 
-            if (!$images) {
+            if (!$images && $shouldReturnDefault) {
                 $images = [
                     ['id' => 0, 'url' => asset('/storage/default/' . $defaultFileName)],
                     ['id' => 0, 'url' => asset('/storage/default/' . $defaultFileName)],

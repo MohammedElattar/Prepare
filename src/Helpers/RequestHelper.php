@@ -6,35 +6,22 @@ use Illuminate\Support\Str;
 
 class RequestHelper
 {
-    /**
-     * Check if the request is coming from Single Page Application ( SPA )
-     */
-    public static function isFirstPartyFrontend(): bool
+    public static function loginIfHasToken($thisValue, array $additionalMiddlewares = [], array $onlyMethods = []): void
     {
-        $domain = request()->headers->get('referer') ?: request()->headers->get('origin');
+        $token = request()->bearerToken();
 
-        return request('fromPostman') || !is_null($domain);
+        if ($token && ! auth()->check()) {
+
+            if ($onlyMethods) {
+                $thisValue->middleware(self::authMiddlewares())->only($onlyMethods);
+            } else {
+                $thisValue->middleware(self::authMiddlewares());
+            }
+        }
     }
 
-    /**
-     * Check If The Request Came From public Website
-     */
-    public static function isPublicRoute(string $fullUrl = null): bool
+    public static function authMiddlewares(array $additionalMiddlewares = [])
     {
-        return static::urlContainsKey('public', $fullUrl);
-    }
-
-    /**
-     * Check If The Request Didn't Come From public Website
-     */
-    public static function isNotPublicRoute(string $fullUrl = null): bool
-    {
-
-        return !static::isPublicRoute(fullUrl: $fullUrl);
-    }
-
-    public static function urlContainsKey(string $key, string $fullUrl = null): bool
-    {
-        return Str::contains($fullUrl ?: request()->url(), $key);
+        return array_merge(GeneralHelper::getDefaultLoggedUserMiddlewares(), $additionalMiddlewares);
     }
 }

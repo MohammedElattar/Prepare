@@ -130,7 +130,7 @@ class ValidationRuleHelper
     {
         $rules = [
             'required' => 'required',
-            'email' => 'email:rfc,dns',
+            'email' => 'email',
             'unique' => 'unique:users,email',
         ];
 
@@ -177,7 +177,6 @@ class ValidationRuleHelper
         $rules = [
             'required' => 'required',
             'date_format' => 'date_format:' . DateHelper::defaultDateFormat(),
-            'after_or_equal' => 'after_or_equal:today',
         ];
 
         return static::replaceDefaultRules($rules, $replaceDefaultRules);

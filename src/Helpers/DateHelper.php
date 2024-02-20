@@ -16,7 +16,7 @@ class DateHelper
 
     public static function defaultDateTimeFormat(): string
     {
-        return 'Y-m-d h:i';
+        return 'Y-m-d H:i';
     }
 
     public static function amPmFormat()
@@ -43,7 +43,7 @@ class DateHelper
 
     public static function defaultTimeFormat()
     {
-        return 'h:i';
+        return 'H:i';
     }
 
     public static function formatTime($time = null)

@@ -62,6 +62,14 @@ class Handler extends ExceptionHandler
             return $this->unauthenticatedResponse('You are not authenticated');
         });
 
+        $this->renderable(function (ValidationErrorsException $e) {
+            return $this->validationErrorsResponse($e->getErrors());
+        });
+
+        $this->renderable(function (InternalServerErrorException $e) {
+            return $this->errorResponse(message: $e->getMessage());
+        });
+
         $this->renderable(function (NotFoundHttpException $e, $req) {
             $msg = $e->getMessage();
 
