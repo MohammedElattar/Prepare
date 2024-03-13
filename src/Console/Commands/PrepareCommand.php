@@ -67,7 +67,7 @@ class PrepareCommand extends Command
     private function fastPaginate(): void
     {
         $this->info('Installing Fast Paginate ....');
-        $this->info(Process::run('composer require hammerstone/fast-paginate --working-dir=' . $this->workingDirectory)->output());
+        $this->info(Process::run('composer require elattar/fast-paginate --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function logViewer(): void
