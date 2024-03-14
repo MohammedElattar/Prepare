@@ -19,7 +19,7 @@ class MustBeVerified
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check()) {
-            if (!auth()->user()->email_verified_at) {
+            if (! auth()->user()->email_verified_at) {
                 return $this->forbiddenResponse();
             }
         }

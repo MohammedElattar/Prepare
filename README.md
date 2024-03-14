@@ -7,7 +7,7 @@
 composer require elattar/prepare
 ```
 - Initialize the newly created project by pushing the helpers
-- This Command will install the development packages that helps us like `laravel telescope`, `laravel ide-helper`, `laravel modules`, `fast paginate`, `laravel-backup` and `log-viewer`
+- This Command will install the development packages that helps us like `laravel octane`, `laravel telescope`, `laravel ide-helper`, `laravel modules`, `fast paginate`, `laravel-backup` and `log-viewer`
 
 ```shell
 php artisan elattar:initialize

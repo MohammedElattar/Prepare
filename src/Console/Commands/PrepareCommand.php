@@ -36,6 +36,8 @@ class PrepareCommand extends Command
 
     private function installDependencies(): void
     {
+        $this->installApi();
+        $this->laravelOctane();
         $this->telescope();
         $this->ideHelper();
         $this->laravelModules();
@@ -50,6 +52,12 @@ class PrepareCommand extends Command
         $this->info(Process::run('composer require laravel/telescope --working-dir=' . $this->workingDirectory)->output());
         $this->info(Process::run("php $this->workingDirectory/artisan telescope:install")->output());
         $this->info(Process::run("php $this->workingDirectory/artisan migrate")->output());
+    }
+
+    public function installApi(): void
+    {
+        $this->info('Installing API ....');
+        $this->info(Process::run("php $this->workingDirectory/artisan install:api")->output());
     }
 
     private function ideHelper(): void
@@ -68,6 +76,13 @@ class PrepareCommand extends Command
     {
         $this->info('Installing Fast Paginate ....');
         $this->info(Process::run('composer require elattar/fast-paginate --working-dir=' . $this->workingDirectory)->output());
+    }
+
+    public function laravelOctane(): void
+    {
+        $this->info('Installing Laravel Octane .....');
+        $this->info(Process::run('composer require laravel/octane --working-dir=' . $this->workingDirectory)->output());
+        $this->info(Process::run("php $this->workingDirectory/artisan octane:install --server=frankenphp")->output());
     }
 
     private function logViewer(): void
