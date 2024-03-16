@@ -12,6 +12,7 @@ use App\Exceptions\ValidationErrorsException;
 use App\Http\Middleware\AccountMustBeActive;
 use App\Http\Middleware\AlwaysAcceptJson;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\MustBeVerified;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SetDefaultLocale;
 use App\Http\Middleware\TrustProxies;
@@ -19,7 +20,12 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Support\Str;
 //use Modules\Auth\Http\Middleware\CheckUserType;
 //use Modules\Auth\Http\Middleware\MustBeVerified;
@@ -48,6 +54,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->use([
             TrustProxies::class,
+            HandleCors::class,
+            PreventRequestsDuringMaintenance::class,
+            ValidatePostSize::class,
+            TrimStrings::class,
+            ConvertEmptyStringsToNull::class,
         ]);
 
         $middleware->alias([
@@ -151,41 +162,41 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Don't Have Permissions
 
-        $exceptions->renderable(function (UnauthorizedException $e, $request) use($httpResponse){
-            return $httpResponse->forbiddenResponse(
-                translate_word('forbidden')
-            );
-        });
-
-        $exceptions->renderable(function (RestException $e) use($httpResponse){
-
-            $errorMessage = $e->getMessage();
-
-            if (Str::contains($errorMessage, '[HTTP 400] Unable to create record: Invalid parameter `To`')) {
-                $errorMessage = translate_word('phone_number_invalid');
-            } elseif (Str::match('/.* was not found$/', $errorMessage)) {
-                $errorMessage = 'code is incorrect';
-            }
-
-            return $httpResponse->errorResponse(
-                null,
-                code: Response::HTTP_INTERNAL_SERVER_ERROR,
-                message: $errorMessage,
-            );
-        });
-
-        $exceptions->renderable(function (EnvironmentException $e) use($httpResponse){
-
-            return $httpResponse->errorResponse(
-                code: Response::HTTP_INTERNAL_SERVER_ERROR,
-                message: $e->getMessage()
-            );
-        });
-
-        $exceptions->renderable(function (InvalidRequestException|InvalidArgumentException $e) {
-            $errorObject = StripeExceptionHelper::getErrorObject($e);
-
-            return (new StripeExceptionHelper())->returnStripeError($errorObject);
-        });
+//        $exceptions->renderable(function (UnauthorizedException $e, $request) use($httpResponse){
+//            return $httpResponse->forbiddenResponse(
+//                translate_word('forbidden')
+//            );
+//        });
+//
+//        $exceptions->renderable(function (RestException $e) use($httpResponse){
+//
+//            $errorMessage = $e->getMessage();
+//
+//            if (Str::contains($errorMessage, '[HTTP 400] Unable to create record: Invalid parameter `To`')) {
+//                $errorMessage = translate_word('phone_number_invalid');
+//            } elseif (Str::match('/.* was not found$/', $errorMessage)) {
+//                $errorMessage = 'code is incorrect';
+//            }
+//
+//            return $httpResponse->errorResponse(
+//                null,
+//                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+//                message: $errorMessage,
+//            );
+//        });
+//
+//        $exceptions->renderable(function (EnvironmentException $e) use($httpResponse){
+//
+//            return $httpResponse->errorResponse(
+//                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+//                message: $e->getMessage()
+//            );
+//        });
+//
+//        $exceptions->renderable(function (InvalidRequestException|InvalidArgumentException $e) {
+//            $errorObject = StripeExceptionHelper::getErrorObject($e);
+//
+//            return (new StripeExceptionHelper())->returnStripeError($errorObject);
+//        });
     })
     ->create();
