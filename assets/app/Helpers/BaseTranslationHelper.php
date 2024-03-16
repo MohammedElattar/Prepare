@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class BaseTranslationsHelper
+class BaseTranslationHelper
 {
     public static function en(): array
     {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Helpers\BaseTranslationsHelper;
+use App\Helpers\BaseTranslationHelper;
 
 return [
     'created' => 'تم الإنشاء بنجاح',
