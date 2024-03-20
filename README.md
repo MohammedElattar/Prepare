@@ -6,6 +6,10 @@
 ```shell
 composer require elattar/prepare
 ```
+- Run `composer update` and type `y`
+```shell
+composer update
+```
 - Initialize the newly created project by pushing the helpers
 - This Command will install the development packages that helps us like `laravel octane`, `laravel telescope`, `laravel ide-helper`, `laravel modules`, `fast paginate`, `laravel-backup` and `log-viewer`
 
