@@ -44,6 +44,8 @@ class PrepareCommand extends Command
         $this->fastPaginate();
         $this->logViewer();
         $this->laravelBackup();
+
+        $this->info(Process::run('composer update --no-interaction --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function telescope(): void
