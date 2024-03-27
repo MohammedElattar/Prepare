@@ -4,14 +4,14 @@ namespace Elattar\Prepare\Helpers;
 
 class ResourceHelper
 {
-    public static function getFirstMediaOriginalUrl($object, string $relationName = 'avatar', string $defaultImageName = 'store.png', bool $shouldReturnDefault = true): ?string
+    public static function getFirstMediaOriginalUrl($object, string $relationName = 'avatar', string $defaultImageName = 'store.png', bool $shouldReturnDefault = true)
     {
-        return $object->relationLoaded($relationName)
-            ? (
-                $object->{$relationName}->first()->original_url
-                ?? $shouldReturnDefault ? asset('/storage/default/'.$defaultImageName) : null
-            )
-            : null;
+        if($object->relationLoaded($relationName))
+        {
+            return collect($object->getRelation($relationName)->first())->get('original_url') ?: ($shouldReturnDefault ? asset('/storage/default/store.png') : null);
+        }
+
+        return null;
     }
 
     public static function getMedia($collectionName, $thisValue, string $relationName = 'mediaPaths', string $defaultFile = 'store.png', bool $shouldReturnDefaultMedia = true)
@@ -28,8 +28,9 @@ class ResourceHelper
     {
         if ($object->relationLoaded($relationName)) {
             $images = [];
+            $imagesRelation = $object->getRelation($relationName);
 
-            $object->{$relationName}->map(
+            $imagesRelation->map(
                 function ($file) use (&$images) {
                     $images[] = ['id' => $file->id, 'url' => $file->original_url];
                 }
