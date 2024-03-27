@@ -36,7 +36,7 @@ class PrepareCommand extends Command
 
     private function installDependencies(): void
     {
-        $basic = $this->argument('basic');
+        $basic = $this->option('basic');
 
         if(! $basic)
         {
