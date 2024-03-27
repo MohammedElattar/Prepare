@@ -17,7 +17,7 @@ class TranslationHelper
     public static function generateFakeTranslatedInput(string $functionName = 'name'): array
     {
         $translatedName = [];
-        foreach (self::$availableLocales as $locale) {
+        foreach (static::$availableLocales as $locale) {
             $fakeName = fake($locale)->{$functionName}();
             $translatedName[$locale] = $fakeName;
         }

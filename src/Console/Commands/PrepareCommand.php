@@ -20,7 +20,7 @@ class PrepareCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'elattar:initialize';
+    protected $signature = 'elattar:initialize {--basic}';
 
     protected $description = 'This Command Used To Prepare Newly Created Laravel Project To Install all development tools';
 
@@ -36,13 +36,19 @@ class PrepareCommand extends Command
 
     private function installDependencies(): void
     {
+        $basic = $this->argument('basic');
+
+        if(! $basic)
+        {
+            $this->laravelOctane();
+            $this->ideHelper();
+            $this->logViewer();
+        }
+
         $this->installApi();
-        $this->laravelOctane();
         $this->telescope();
-        $this->ideHelper();
         $this->laravelModules();
         $this->fastPaginate();
-        $this->logViewer();
         $this->laravelBackup();
 
         $this->info(Process::run('composer update --no-interaction --working-dir=' . $this->workingDirectory)->output());
