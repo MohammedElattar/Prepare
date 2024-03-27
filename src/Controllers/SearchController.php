@@ -12,14 +12,14 @@ class SearchController extends Controller
     {
         if (!is_null($handle)) {
             if (!$orWhere) {
-                $query->where(fn(Builder $query) => $this->searchLogic($query, $searchableKeys, $handle, $translatedKeys));
+                $query->where(fn(Builder $builder) => static::searchLogic($builder, $searchableKeys, $handle, $translatedKeys));
             } else {
-                $query->orWhere(fn(Builder $query) => $this->searchLogic($query, $searchableKeys, $handle, $translatedKeys));
+                $query->orWhere(fn(Builder $builder) => static::searchLogic($builder, $searchableKeys, $handle, $translatedKeys));
             }
         }
     }
 
-    private function searchLogic(Builder $query, array $searchableKeys, $handle, array $translatedKeys = []): void
+    private static function searchLogic(Builder $query, array $searchableKeys, $handle, array $translatedKeys = []): void
     {
         $isFirstKey = false;
         foreach ($searchableKeys as $key) {

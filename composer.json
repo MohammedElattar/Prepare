@@ -34,5 +34,6 @@
       ]
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "version": "5.0"
 }

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait Searchable
 {
-    public function scopeSearchable(Builder $query, array $columns = ['name'], array $translatedKeys = [], string $handleKeyName = 'handle'): static
+    public function scopeSearchable(Builder $query, array $columns = ['name'], array $translatedKeys = [], string $handleKeyName = 'handle'): Builder
     {
         SearchController::searchForHandle($query, $columns, request($handleKeyName), $translatedKeys);
 
-        return $this;
+        return $query;
     }
 
     public function scopeSearchByForeignKey(Builder $builder, string $foreignKeyColumn, string $value = null)
