@@ -20,12 +20,12 @@ class ImageService
     /**
      * store Just one media
      */
-    public function storeMedia(string $collectionName, string $mainMediaRequest): void
+    public function storeMedia(string $collectionName, string $requestFileName): void
     {
-        if (isset($this->data[$mainMediaRequest]) && $mainMediaRequest != null) {
-            MediaHelper::storeImageFromRequest(
+        if (isset($this->data[$requestFileName]) && $requestFileName != null) {
+            (new FileOperationService())->storeImageFromRequest(
                 $this->model,
-                $mainMediaRequest,
+                $requestFileName,
                 $collectionName,
             );
         }
@@ -34,15 +34,15 @@ class ImageService
     /**
      * Update just one media, this function delete then add the new media
      * @param string $collectionName
-     * @param string $mainMediaRequest
+     * @param string $requestFileName
      * @return void
      */
-    public function updateMedia(string $collectionName, string $mainMediaRequest): void
+    public function updateMedia(string $collectionName, string $requestFileName): void
     {
-        if (isset($this->data[$mainMediaRequest]) && $mainMediaRequest != null) {
+        if (isset($this->data[$requestFileName]) && $requestFileName != null) {
             $this->model->registerMediaCollections();
 
-            self::storeMedia($collectionName, $mainMediaRequest);
+            self::storeMedia($collectionName, $requestFileName);
         }
     }
 
