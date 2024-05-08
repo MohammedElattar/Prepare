@@ -50,6 +50,6 @@ class DateHelper
     {
         $time = $time ?: now();
 
-        return Carbon::parse($time)->format(self::defaultTimeFormat());
+        return Carbon::parse($time)->format(static::defaultTimeFormat());
     }
 }

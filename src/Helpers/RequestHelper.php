@@ -13,9 +13,9 @@ class RequestHelper
         if ($token && ! auth()->check()) {
 
             if ($onlyMethods) {
-                $thisValue->middleware(self::authMiddlewares())->only($onlyMethods);
+                $thisValue->middleware(static::authMiddlewares())->only($onlyMethods);
             } else {
-                $thisValue->middleware(self::authMiddlewares());
+                $thisValue->middleware(static::authMiddlewares());
             }
         }
     }
