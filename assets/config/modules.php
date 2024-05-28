@@ -6,14 +6,13 @@ use Nwidart\Modules\Providers\ConsoleServiceProvider;
 return [
 
     /*
-|--------------------------------------------------------------------------
-| Module Namespace
-|--------------------------------------------------------------------------
-|
-| Default module namespace.
-|
-*/
-
+    |--------------------------------------------------------------------------
+    | Module Namespace
+    |--------------------------------------------------------------------------
+    |
+    | Default module namespace.
+    |
+    */
     'namespace' => 'Modules',
 
     /*
@@ -24,26 +23,18 @@ return [
     | Default module stubs.
     |
     */
-
     'stubs' => [
         'enabled' => true,
-        'path' => base_path('stubs/nwidart-stubs'),
+        'path' => base_path('stubs'),
         'files' => [
             'routes/web' => 'Routes/web.php',
             'routes/api' => 'Routes/api.php',
-            'views/index' => 'Resources/views/index.blade.php',
-            'views/master' => 'Resources/views/layouts/master.blade.php',
             'scaffold/config' => 'Config/config.php',
-            'composer' => 'composer.json',
-            'assets/js/app' => 'Resources/assets/js/app.js',
-            'assets/sass/app' => 'Resources/assets/sass/app.scss',
-            'vite' => 'vite.config.js',
-            'package' => 'package.json',
         ],
         'replacements' => [
-            'routes/web' => ['LOWER_NAME', 'STUDLY_NAME'],
-            'routes/api' => ['LOWER_NAME'],
-            'vite' => ['LOWER_NAME'],
+            'routes/web' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'CONTROLLER_NAMESPACE'],
+            'routes/api' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'CONTROLLER_NAMESPACE'],
+            'vite' => ['LOWER_NAME', 'STUDLY_NAME'],
             'json' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE'],
             'views/index' => ['LOWER_NAME'],
             'views/master' => ['LOWER_NAME', 'STUDLY_NAME'],
@@ -56,9 +47,10 @@ return [
                 'AUTHOR_EMAIL',
                 'MODULE_NAMESPACE',
                 'PROVIDER_NAMESPACE',
+                'APP_FOLDER_NAME',
             ],
         ],
-        'gitkeep' => false,
+        'gitkeep' => true,
     ],
     'paths' => [
         /*
@@ -66,70 +58,108 @@ return [
         | Modules path
         |--------------------------------------------------------------------------
         |
-        | This path used for save the generated module. This path also will be added
-        | automatically to list of scanned folders.
+        | This path is used to save the generated module.
+        | This path will also be added automatically to the list of scanned folders.
         |
         */
+        'modules' => base_path('Modules'),
 
-        'nwidart-stubs' => base_path('Modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules assets path
         |--------------------------------------------------------------------------
         |
-        | Here you may update the nwidart-stubs assets path.
+        | Here you may update the modules' assets path.
         |
         */
+        'assets' => public_path('modules'),
 
-        'assets' => public_path('nwidart-stubs'),
         /*
         |--------------------------------------------------------------------------
-        | The migrations path
+        | The migrations' path
         |--------------------------------------------------------------------------
         |
-        | Where you run 'module:publish-migration' command, where do you publish the
+        | Where you run the 'module:publish-migration' command, where do you publish the
         | the migration files?
         |
         */
-
         'migration' => base_path('database/migrations'),
+
+        /*
+        |--------------------------------------------------------------------------
+        | The app path
+        |--------------------------------------------------------------------------
+        |
+        | app folder name
+        | for example can change it to 'src' or 'App'
+        */
+        'app_folder' => 'app/',
+
         /*
         |--------------------------------------------------------------------------
         | Generator path
         |--------------------------------------------------------------------------
         | Customise the paths where the folders will be generated.
-        | Set the generate key to false to not generate that folder
+        | Setting the generate key to false will not generate that folder
         */
         'generator' => [
-            'config' => ['path' => 'Config', 'generate' => false],
+            //
+            'actions' => ['path' => 'Actions', 'generate' => false],
+            'casts' => ['path' => 'Casts', 'generate' => false],
+            'channels' => ['path' => 'Broadcasting', 'generate' => false],
             'command' => ['path' => 'Console', 'generate' => false],
+            'component-class' => ['path' => 'View/Components', 'generate' => false],
+            'emails' => ['path' => 'Emails', 'generate' => false],
+            'event' => ['path' => 'Events', 'generate' => false],
+            'enums' => ['path' => 'Enums', 'generate' => false],
+            'exceptions' => ['path' => 'Exceptions', 'generate' => false],
+            'jobs' => ['path' => 'Jobs', 'generate' => false],
+            'helpers' => ['path' => 'Helpers', 'generate' => false],
+            'interfaces' => ['path' => 'Interfaces', 'generate' => false],
+            'listener' => ['path' => 'Listeners', 'generate' => false],
+            'model' => ['path' => 'Models', 'generate' => false],
+            'notifications' => ['path' => 'Notifications', 'generate' => false],
+            'observer' => ['path' => 'Observers', 'generate' => false],
+            'policies' => ['path' => 'Policies', 'generate' => false],
+            'provider' => ['path' => 'Providers', 'generate' => true],
+            'repository' => ['path' => 'Repositories', 'generate' => false],
+            'resource' => ['path' => 'Transformers', 'generate' => false],
+            'route-provider' => ['path' => 'Providers', 'generate' => true],
+            'rules' => ['path' => 'Rules', 'generate' => false],
+            'services' => ['path' => 'Services', 'generate' => false],
+            'scopes' => ['path' => 'Models/Scopes', 'generate' => false],
+            'traits' => ['path' => 'Traits', 'generate' => false],
+
+            // Http/
+            'controller' => ['path' => 'Http/Controllers', 'generate' => true],
+            'filter' => ['path' => 'Http/Middleware', 'generate' => false],
+            'request' => ['path' => 'Http/Requests', 'generate' => false],
+
+            // config/
+            'config' => ['path' => 'Config', 'generate' => true],
+
+            // database/
+            'factory' => ['path' => 'Database/Factories', 'generate' => true],
             'migration' => ['path' => 'Database/Migrations', 'generate' => true],
             'seeder' => ['path' => 'Database/Seeders', 'generate' => true],
-            'factory' => ['path' => 'Database/factories', 'generate' => false],
-            'model' => ['path' => 'Entities', 'generate' => true],
-            'routes' => ['path' => 'Routes', 'generate' => true],
-            'controller' => ['path' => 'Http/Controllers', 'generate' => true],
-            'filter' => ['path' => 'Http/Middleware', 'generate' => true],
-            'request' => ['path' => 'Http/Requests', 'generate' => true],
-            'provider' => ['path' => 'Providers', 'generate' => true],
+
+            // lang/
+            'lang' => ['path' => 'Lang', 'generate' => false],
+
+            // resource/
             'assets' => ['path' => 'Resources/assets', 'generate' => false],
-            'lang' => ['path' => 'Resources/lang', 'generate' => false],
-            'views' => ['path' => 'Resources/views', 'generate' => false],
-            'test' => ['path' => 'Tests/Unit', 'generate' => true],
-            'test-feature' => ['path' => 'Tests/Feature', 'generate' => false],
-            'repository' => ['path' => 'Repositories', 'generate' => false],
-            'event' => ['path' => 'Events', 'generate' => false],
-            'listener' => ['path' => 'Listeners', 'generate' => false],
-            'policies' => ['path' => 'Policies', 'generate' => false],
-            'rules' => ['path' => 'Rules', 'generate' => false],
-            'jobs' => ['path' => 'Jobs', 'generate' => false],
-            'emails' => ['path' => 'Emails', 'generate' => false],
-            'notifications' => ['path' => 'Notifications', 'generate' => false],
-            'resource' => ['path' => 'Transformers', 'generate' => false],
             'component-view' => ['path' => 'Resources/views/components', 'generate' => false],
-            'component-class' => ['path' => 'View/Components', 'generate' => false],
+            'views' => ['path' => 'Resources/views', 'generate' => false],
+
+            // routes/
+            'routes' => ['path' => 'Routes', 'generate' => true],
+
+            // tests/
+            'test-feature' => ['path' => 'Tests/Feature', 'generate' => false],
+            'test-unit' => ['path' => 'Tests/Unit', 'generate' => false],
         ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Package commands
@@ -153,13 +183,13 @@ return [
     | directory. This is useful if you host the package in packagist website.
     |
     */
-
     'scan' => [
         'enabled' => false,
         'paths' => [
             base_path('vendor/*/*'),
         ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Composer File Template
@@ -168,12 +198,11 @@ return [
     | Here is the config for the composer.json file, generated by this package
     |
     */
-
     'composer' => [
-        'vendor' => 'nwidart',
+        'vendor' => env('MODULE_VENDOR', 'nwidart'),
         'author' => [
-            'name' => 'Nicolas Widart',
-            'email' => 'n.widart@gmail.com',
+            'name' => env('MODULE_AUTHOR_NAME', 'Nicolas Widart'),
+            'email' => env('MODULE_AUTHOR_EMAIL', 'n.widart@gmail.com'),
         ],
         'composer-output' => false,
     ],
@@ -187,11 +216,12 @@ return [
     |
     */
     'cache' => [
-        'enabled' => false,
-        'driver' => 'file',
-        'key' => 'laravel-modules',
-        'lifetime' => 60,
+        'enabled' => env('MODULES_CACHE_ENABLED', false),
+        'driver' => env('MODULES_CACHE_DRIVER', 'file'),
+        'key' => env('MODULES_CACHE_KEY', 'laravel-modules'),
+        'lifetime' => env('MODULES_CACHE_LIFETIME', 60),
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Choose what laravel-modules will register as custom namespaces.

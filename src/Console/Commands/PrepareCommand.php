@@ -51,7 +51,7 @@ class PrepareCommand extends Command
         $this->fastPaginate();
         $this->laravelBackup();
 
-        $this->info(Process::run('composer update --no-interaction --working-dir=' . $this->workingDirectory)->output());
+        $this->info(Process::run('composer update --working-dir=' . $this->workingDirectory)->output());
     }
 
     private function telescope(): void
@@ -111,6 +111,8 @@ class PrepareCommand extends Command
 
         Composer::start()
             ->push('autoload.psr-4.Modules\\', 'Modules/')
+            ->push('extra.merge-plugin.include',  ["Modules/*/composer.json"])
+            ->push('config.allow-plugins.wikimedia/composer-merge-plugin',  true)
             ->write();
 
         $this->info('Reloading Composer....');
