@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
-use App\Helpers\MediaHelper;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class ImageService
 {
@@ -17,93 +19,112 @@ class ImageService
         $this->data = $data;
     }
 
+    public static function createInstance(HasMedia $model, array $data): ImageService
+    {
+        return new self($model, $data);
+    }
+
     /**
      * store Just one media
      */
-    public function storeMedia(string $collectionName, string $requestFileName): void
+    public function storeOneMediaFromRequest(string $collectionName, string $requestFileName): void
     {
-        if (isset($this->data[$requestFileName]) && $requestFileName != null) {
+        if (isset($this->data[$requestFileName])) {
             (new FileOperationService())->storeImageFromRequest(
                 $this->model,
-                $requestFileName,
                 $collectionName,
+                $requestFileName,
             );
         }
     }
 
-    /**
-     * Update just one media, this function delete then add the new media
-     * @param string $collectionName
-     * @param string $requestFileName
-     * @return void
-     */
-    public function updateMedia(string $collectionName, string $requestFileName): void
+    public function updateOneMedia(string $collectionName, string $requestFileName, string $resetMainImageCollectionName = 'registerMediaCollections'): void
     {
-        if (isset($this->data[$requestFileName]) && $requestFileName != null) {
-            $this->model->registerMediaCollections();
+        if (isset($this->data[$requestFileName])) {
+            info($this->model);
+            $this->model->$resetMainImageCollectionName();
 
-            self::storeMedia($collectionName, $requestFileName);
+            $this->storeOneMediaFromRequest($collectionName, $requestFileName);
         }
     }
 
     /**
-     * @param Model $model
-     * @param array $data
      * @param string $collectionName
      * @param string $deleteMediasRequest
      * @param string $otherMediasRequest
      * @param string $otherMediasRelationName
      * @return void
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
-    public function updateMedias(
-        Model $model,
-        array $data,
+    public function updateMultipleMedia(
         string $collectionName,
         string $deleteMediasRequest = '',
         string $otherMediasRequest = '',
         string $otherMediasRelationName = 'otherImages',
     ): void
     {
-        self::deleteMediasWithIds($model, $data, $deleteMediasRequest, $otherMediasRelationName);
+        $this->deleteMultipleMediaViaIds($deleteMediasRequest, $otherMediasRelationName);
 
-        self::addOtherMedias($model, $data,$collectionName, $otherMediasRequest);
+        $this->storeMultipleMedia($collectionName, $otherMediasRequest);
     }
 
     /**
      * store many medias
-     * @param Model $model
-     * @param array $data
      * @param string $collectionName
-     * @param string $otherImagesRequest
+     * @param string $multipleMediaRequestKey
      * @return void
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
-    public static function addOtherMedias(Model $model, array $data, string $collectionName, string $otherMediasRequest): void
+    public function storeMultipleMedia(string $collectionName, string $multipleMediaRequestKey = 'other_images'): void
     {
-        if (isset($data[$otherMediasRequest]) && $otherMediasRequest != null) {
-            foreach ($data[$otherMediasRequest] as $image) {
-                $model->addMedia($image)->toMediaCollection($collectionName,
-                );
+        if (isset($this->data[$multipleMediaRequestKey])) {
+            foreach ($this->data[$multipleMediaRequestKey] as $media) {
+                $this->storeMediaFromFile($media, $collectionName);
             }
         }
     }
 
     /**
-     * @param Model $model
-     * @param array $data
-     * @param string $deleteMediasRequest
+     * @param string $deletedMediaRequestKey
      * @param string $otherMediasRelationName
      * @return void
      */
-    public static function deleteMediasWithIds(Model $model, array $data, string $deleteMediasRequest,string $otherMediasRelationName = 'otherImages'): void
+    public function deleteMultipleMediaViaIds(string $deletedMediaRequestKey, string $otherMediasRelationName = 'otherImages'): void
     {
-        if (isset($data[$deleteMediasRequest]) && $deleteMediasRequest != null) {
-            $deletedMedias = array_unique($data[$deleteMediasRequest]);
+        if (isset($this->data[$deletedMediaRequestKey])) {
+            $deletedMedias = array_unique($this->data[$deletedMediaRequestKey]);
 
-            $model
+            $this->model
                 ->$otherMediasRelationName()
                 ->whereIntegerInRaw('id', $deletedMedias)
                 ->get()
                 ->map(fn ($item) => $item->delete());
         }
+    }
+
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function storeMediaFromFile(UploadedFile $media, string $collectionName): void
+    {
+        $this
+            ->model
+            ->addMedia($media)
+            ->usingFileName(Str::random().static::getMediaExtension($media))
+            ->toMediaCollection($collectionName);
+    }
+
+    public static function getMediaExtension(UploadedFile $uploadedFile): string
+    {
+        $uploadedFileExtension = explode('/',$uploadedFile->getMimeType())[0];
+
+        return match ($uploadedFileExtension) {
+            'audio' => 'mp3',
+            'image' => 'jpg',
+            default => 'mp4',
+        };
     }
 }

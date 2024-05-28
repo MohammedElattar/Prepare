@@ -27,7 +27,7 @@ class TranslationHelper
 
     public static function generateFakeTranslatedNameAndSlug(array &$translatedName, array &$translatedSlug): void
     {
-        foreach (self::$availableLocales as $locale) {
+        foreach (static::$availableLocales as $locale) {
             $fakeName = fake($locale)->name();
             $translatedName[$locale] = $fakeName;
             $translatedSlug[$locale] = Str::slug($fakeName);

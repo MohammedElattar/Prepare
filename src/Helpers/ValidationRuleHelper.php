@@ -35,17 +35,6 @@ class ValidationRuleHelper
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
-    public static function replaceDefaultRules(array $rules, array $replaceDefaultRules): array
-    {
-        foreach ($replaceDefaultRules as $ruleKey => $ruleValue) {
-            $rules[$ruleKey] = $ruleValue;
-        }
-
-        return collect(array_values($rules))->filter(function ($rule) {
-            return (bool) $rule;
-        })->toArray();
-    }
-
     public static function enumRules(array $in, array $replaceDefaultRules = [])
     {
         $rules = [
@@ -76,7 +65,7 @@ class ValidationRuleHelper
             'min' => 'min:1',
         ];
 
-        return self::replaceDefaultRules($rules, $replaceDefaultRules);
+        return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
     public static function booleanRules(array $replaceDefaultRules = []): array
@@ -96,7 +85,7 @@ class ValidationRuleHelper
             'numeric' => 'numeric',
         ];
 
-        return self::replaceDefaultRules($rules, $replaceDefaultRules);
+        return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
     public static function usernameRules(array $replaceDefaultRules = []): array
@@ -107,7 +96,7 @@ class ValidationRuleHelper
             'max' => 'max:255',
         ];
 
-        return self::replaceDefaultRules($rules, $replaceDefaultRules);
+        return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
     /** Get Image Rules For Store or Update
@@ -250,6 +239,38 @@ class ValidationRuleHelper
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
+    public static function unsignedTinyInteger(array $replaceDefaultRules = []): array
+    {
+        return static::integerRules([
+            ...$replaceDefaultRules,
+            'max' => 'max:127',
+        ]);
+    }
+
+    public static function tinyInteger(array $replaceDefaultRules = [])
+    {
+        return static::integerRules([
+            ...$replaceDefaultRules,
+            'max' => 'max:127',
+        ]);
+    }
+
+    public static function unsignedSmallInteger(array $replaceDefaultRules = [])
+    {
+        return static::integerRules([
+            ...$replaceDefaultRules,
+            'max' => 'max:65535',
+        ]);
+    }
+
+    public static function smallInteger(array $replaceDefaultRules = [])
+    {
+        return static::integerRules([
+            ...$replaceDefaultRules,
+            'max' => 'max:32767',
+        ]);
+    }
+
     public static function hexColorRules(array $replaceDefaultRules = []): array
     {
         $rules = [
@@ -258,7 +279,7 @@ class ValidationRuleHelper
             'regex' => 'regex:/^#([A-Fa-f0-9]{6})$/',
         ];
 
-        return self::replaceDefaultRules($rules, $replaceDefaultRules);
+        return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
     public static function arrayRules(array $replaceDefaultRules = []): array
@@ -296,7 +317,7 @@ class ValidationRuleHelper
                 $replaceDefaultRules['required'] = '';
             }
 
-            $rules["$keyName.$locale"] = self::getValueType($valueType, $replaceDefaultRules);
+            $rules["$keyName.$locale"] = static::getValueType($valueType, $replaceDefaultRules);
         }
 
         return $rules;
@@ -304,7 +325,7 @@ class ValidationRuleHelper
 
     public static function getValueType(string $valueType, array $replaceDefaultRules = [])
     {
-        return self::allValuesTypes($replaceDefaultRules)[$valueType];
+        return static::allValuesTypes($replaceDefaultRules)[$valueType];
     }
 
     public static function allValuesTypes(array $replaceDefaultRules = [])
@@ -428,5 +449,14 @@ class ValidationRuleHelper
         return static::replaceDefaultRules($rules, $replaceDefaultRules);
     }
 
+    public static function replaceDefaultRules(array $rules, array $replaceDefaultRules): array
+    {
+        foreach ($replaceDefaultRules as $ruleKey => $ruleValue) {
+            $rules[$ruleKey] = $ruleValue;
+        }
 
+        return collect(array_values($rules))->filter(function ($rule) {
+            return (bool) $rule;
+        })->toArray();
+    }
 }
