@@ -11,7 +11,6 @@ class PrepareServiceProvider extends ServiceProvider
         $this->app->register(MiddlewareServiceProvider::class);
         $this->app->register(FacadeServiceProvider::class);
         $this->app->register(CommandServiceProvider::class);
-        $this->app->register(ScheduleServiceProvider::class);
     }
 
     public function boot()

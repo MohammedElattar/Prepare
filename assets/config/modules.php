@@ -25,7 +25,7 @@ return [
     */
     'stubs' => [
         'enabled' => true,
-        'path' => base_path('stubs'),
+        'path' => base_path('stubs/modules'),
         'files' => [
             'routes/web' => 'Routes/web.php',
             'routes/api' => 'Routes/api.php',
@@ -50,7 +50,7 @@ return [
                 'APP_FOLDER_NAME',
             ],
         ],
-        'gitkeep' => true,
+        'gitkeep' => false,
     ],
     'paths' => [
         /*

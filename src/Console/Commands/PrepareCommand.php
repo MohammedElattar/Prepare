@@ -43,13 +43,13 @@ class PrepareCommand extends Command
             $this->laravelOctane();
             $this->ideHelper();
             $this->logViewer();
+            $this->laravelBackup();
         }
 
         $this->installApi();
         $this->telescope();
         $this->laravelModules();
         $this->fastPaginate();
-        $this->laravelBackup();
 
         $this->info(Process::run('composer update --working-dir=' . $this->workingDirectory)->output());
     }

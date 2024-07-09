@@ -6,6 +6,7 @@ use App\Traits\HttpResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Modules\Auth\Enums\AuthEnum;
 
 class MustBeVerified
 {
@@ -19,7 +20,7 @@ class MustBeVerified
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check()) {
-            if (! auth()->user()->email_verified_at) {
+            if (! auth()->user()->{AuthEnum::VERIFIED_AT}) {
                 return $this->forbiddenResponse();
             }
         }

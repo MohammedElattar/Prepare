@@ -18,7 +18,6 @@ class RedirectIfAuthenticated
         if (! preg_match('/.*json$/', $request->header('Accept'))) {
             foreach ($guards as $guard) {
                 if (Auth::guard($guard)->check()) {
-                    echo 'user should be redirected';
                     return redirect(RouteServiceProvider::HOME);
                 }
             }

@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 class ImageService
 {
     private HasMedia $model;
+
     private array $data;
 
     public function __construct($model, $data)
@@ -27,7 +28,7 @@ class ImageService
     /**
      * store Just one media
      */
-    public function storeOneMediaFromRequest(string $collectionName, string $requestFileName): void
+    public function storeOneMediaFromRequest(string $collectionName, string $requestFileName)
     {
         if (isset($this->data[$requestFileName])) {
             (new FileOperationService())->storeImageFromRequest(
@@ -41,7 +42,6 @@ class ImageService
     public function updateOneMedia(string $collectionName, string $requestFileName, string $resetMainImageCollectionName = 'registerMediaCollections'): void
     {
         if (isset($this->data[$requestFileName])) {
-            info($this->model);
             $this->model->$resetMainImageCollectionName();
 
             $this->storeOneMediaFromRequest($collectionName, $requestFileName);
@@ -49,11 +49,6 @@ class ImageService
     }
 
     /**
-     * @param string $collectionName
-     * @param string $deleteMediasRequest
-     * @param string $otherMediasRequest
-     * @param string $otherMediasRelationName
-     * @return void
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
@@ -62,8 +57,7 @@ class ImageService
         string $deleteMediasRequest = '',
         string $otherMediasRequest = '',
         string $otherMediasRelationName = 'otherImages',
-    ): void
-    {
+    ): void {
         $this->deleteMultipleMediaViaIds($deleteMediasRequest, $otherMediasRelationName);
 
         $this->storeMultipleMedia($collectionName, $otherMediasRequest);
@@ -71,9 +65,7 @@ class ImageService
 
     /**
      * store many medias
-     * @param string $collectionName
-     * @param string $multipleMediaRequestKey
-     * @return void
+     *
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
@@ -86,11 +78,6 @@ class ImageService
         }
     }
 
-    /**
-     * @param string $deletedMediaRequestKey
-     * @param string $otherMediasRelationName
-     * @return void
-     */
     public function deleteMultipleMediaViaIds(string $deletedMediaRequestKey, string $otherMediasRelationName = 'otherImages'): void
     {
         if (isset($this->data[$deletedMediaRequestKey])) {
@@ -113,18 +100,12 @@ class ImageService
         $this
             ->model
             ->addMedia($media)
-            ->usingFileName(Str::random().static::getMediaExtension($media))
+            ->usingFileName(Str::random().'.'.static::getMediaExtension($media))
             ->toMediaCollection($collectionName);
     }
 
     public static function getMediaExtension(UploadedFile $uploadedFile): string
     {
-        $uploadedFileExtension = explode('/',$uploadedFile->getMimeType())[0];
-
-        return match ($uploadedFileExtension) {
-            'audio' => 'mp3',
-            'image' => 'jpg',
-            default => 'mp4',
-        };
+        return explode('/', $uploadedFile->getMimeType())[1];
     }
 }
