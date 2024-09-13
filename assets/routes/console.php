@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schedule;
 |
 */
 
-Schedule::command('backup:clean --disable-notifications')->daily()->at('1:00');
-Schedule::command('backup:run --only-db --disable-notifications')->daily()->at('2:00');
+//Schedule::command('backup:clean --disable-notifications')->daily()->at('1:00');
+//Schedule::command('backup:run --only-db --disable-notifications')->daily()->at('2:00');
 
 Schedule::job(new TruncateTelescopeJob())->everyTenMinutes();
