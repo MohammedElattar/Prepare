@@ -21,6 +21,7 @@ class BaseTranslationHelper
             'settings' => 'settings',
             'terms_and_conditions' => 'Terms And Conditions',
             'working_hours' => 'Working Hours',
+            'role' => 'Role',
             'user' => 'User',
             'testimonial' => 'Testimonial',
             'enabled' => 'Enabled',
@@ -29,6 +30,9 @@ class BaseTranslationHelper
             'image' => 'Image',
             'record' => 'Record',
             'message' => 'Message',
+            'expense' => 'Expense',
+            'expense_type' => 'Expense Type',
+            'general_expense' => 'General Expense',
             'rate_limit_exceeded' => 'You exceeded the maximum number of allowed requests, please try again',
         ];
     }
@@ -59,6 +63,9 @@ class BaseTranslationHelper
             'image' => 'صورة',
             'record' => 'السجل',
             'message' => 'الرسالة',
+            'expense' => 'نفقة',
+            'expense_type' => 'نوع النفقة',
+            'general_expense' => 'نفقة عامة',
             'rate_limit_exceeded' => 'لقد تجاوزت الحد الأقصى لعدد الطلبات المسموح بها، يرجى المحاولة مرة أخرى',
         ];
     }
@@ -89,6 +96,9 @@ class BaseTranslationHelper
             'image' => 'Image',
             'record' => 'enregistrement',
             'message' => 'Message',
+            'expense' => 'Dépense',
+            'expense_type' => 'Type de dépense',
+            'general_expense' => 'Dépense générale',
         ];
     }
 }

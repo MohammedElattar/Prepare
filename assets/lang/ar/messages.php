@@ -3,9 +3,14 @@
 use App\Helpers\BaseTranslationHelper;
 
 return [
-    'created' => 'تم الإنشاء بنجاح',
-    'updated' => 'تم التحديث بنجاح',
-    'deleted' => 'تم الحذف بنجاح',
+    'created' => 'تم إنشائه بنجاح',
+    'updated' => 'تم تحديثه بنجاح',
+    'deleted' => 'تم حذفه بنجاح',
+    'created_female' => 'تم إنشاؤها بنجاح',
+    'updated_female' => 'تم تحديثها بنجاح',
+    'deleted_female' => 'تم حذفها بنجاح',
+    'accepted' => 'تم قبوله',
+    'rejected' => 'تم رفضه',
     'reset' => 'تمت إعادة التعيين بنجاح',
     'role' => 'الدور',
     'name' => 'الاسم',
@@ -92,5 +97,7 @@ return [
     'active_address' => 'العنوان النشط',
     'employee' => 'الموظف',
     'finished' => 'تم الانتهاء بنجاح',
+    'record_not_found' => 'لم نتمكن من العثور على السجل المطلوب',
+    'maintenance_mode' => 'نحن حاليًا في وضع الصيانة، يرجى المحاولة مرة أخرى في وقت لاحق',
     ...BaseTranslationHelper::ar(),
 ];

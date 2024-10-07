@@ -2,9 +2,9 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Exception;
+use App\Exceptions\BaseExceptionClass;
 
-class $CLASS$ extends Exception
+class $CLASS$ extends BaseExceptionClass
 {
     //
 }

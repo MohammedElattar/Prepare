@@ -41,4 +41,16 @@ class ResourceHelper
 
         return null;
     }
+
+    public static function shouldReturnForeignKey(
+        $resource,
+        string $relationName,
+        string $foreignKey,
+        bool $returnIfNull = false
+    ) {
+        return ! $resource->relationLoaded($relationName)
+            && (
+                $returnIfNull || ! is_null($resource->{$foreignKey})
+            );
+    }
 }

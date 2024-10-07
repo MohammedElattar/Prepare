@@ -3,14 +3,19 @@
 use App\Helpers\BaseTranslationHelper;
 
 return [
-    'created' => 'Created Successfully',
-    'updated' => 'Updated Successfully',
-    'deleted' => 'Deleted Successfully',
-    'reset' => 'Reset Successfully',
+    'created' => 'created successfully',
+    'updated' => 'updated successfully',
+    'deleted' => 'deleted successfully',
+    'created_female' => 'created successfully',
+    'updated_female' => 'updated successfully',
+    'deleted_female' => 'deleted successfully',
+    'accepted' => 'has been accepted',
+    'rejected' => 'has been rejected',
+    'reset' => 'reset successfully',
     'logged' => 'logged in successfully',
     'logged_out' => 'logged out successfully',
-    'wrong_credentials' => 'Wrong Credentials',
-    'verified' => 'Verified Successfully',
+    'wrong_credentials' => 'Wrong credentials',
+    'verified' => 'Verified successfully',
     'profile' => 'Profile',
     'handle' => 'Handle',
     'password_reset_sent' => 'Password Reset Link Sent',
@@ -51,5 +56,7 @@ return [
     'cannot_proceed' => 'Cannot Proceed',
     'status' => 'Status',
     'finished' => 'Finished Successfully',
+    'record_not_found' => 'Could not find the requested resource',
+    'maintenance_mode' => 'We are currently under maintenance, please try again later',
     ...BaseTranslationHelper::en(),
 ];

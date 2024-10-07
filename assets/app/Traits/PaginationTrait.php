@@ -12,4 +12,9 @@ trait PaginationTrait
     {
         return PaginationHelper::paginateData($builder);
     }
+
+    public function scopeDefaultPaginatedCollection(Builder $builder): LengthAwarePaginator
+    {
+        return $builder->paginate(PaginationHelper::paginationCountPerPage(), page: PaginationHelper::getCurrentPage());
+    }
 }

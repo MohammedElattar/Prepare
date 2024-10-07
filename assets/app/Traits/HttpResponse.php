@@ -103,12 +103,6 @@ trait HttpResponse
     ): JsonResponse {
         $data = [
             'data' => $isCollection ? new $resourceClass($collection->items()) : $resourceClass::collection($collection->items()),
-            'links' => [
-                'first' => $collection->url(1),
-                'last' => $collection->url($collection->lastPage()),
-                'next' => $collection->nextPageUrl(),
-                'prev' => $collection->previousPageUrl(),
-            ],
             'meta' => [
                 'current_page' => $collection->currentPage(),
                 'from' => $collection->firstItem(),
