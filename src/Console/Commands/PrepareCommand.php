@@ -102,7 +102,7 @@ class PrepareCommand extends Command
 
         $this->info('Configuring commitlint and husky ....');
         $this->info(Process::run("cd $this->workingDirectory && rm -f $this->workingDirectory/.husky/commit-msg")->output());
-        $this->info(Process::run("cd $this->workingDirectory && npx husky add .husky/commit-msg 'npx --no-install commitlint --edit $1'")->errorOutput());
+        $this->info(Process::run("cd $this->workingDirectory && npx husky add .husky/commit-msg 'npx --no-install commitlint --edit $1'")->output());
     }
 
     private function composerChanges(): void
