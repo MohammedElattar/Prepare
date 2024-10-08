@@ -13,7 +13,7 @@ class PrepareCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'elattar:initialize {--basic}';
+    protected $signature = 'elattar:initialize {--advanced} {--no-commitlint}';
     protected $description = 'This Command Used To Prepare Newly Created Laravel Project To Install all development tools';
     private string $workingDirectory;
 
@@ -35,9 +35,16 @@ class PrepareCommand extends Command
 
     private function installDependencies(): void
     {
-        $basic = $this->option('basic');
+        $this->commitLint();
+        $advanced = $this->option('advanced');
+        $noCommitlint = $this->option('no-commitlint');
 
-        if (!$basic) {
+        if(!$noCommitlint)
+        {
+            $this->commitLint();
+        }
+
+        if ($advanced) {
             $this->logViewer();
         }
 
@@ -79,6 +86,23 @@ class PrepareCommand extends Command
     {
         $this->info('Installing Fast Paginate ....');
         $this->info(Process::run('composer require elattar/fast-paginate --working-dir=' . $this->workingDirectory)->output());
+    }
+
+    private function commitLint(): void
+    {
+        $this->info('Installing commitlint, husky to provide git conventional commits ....');
+        $this->info('------------------------------------');
+        $this->info(Process::run("npm --prefix $this->workingDirectory install --save-dev @commitlint/config-conventional @commitlint/cli husky")->output());
+        $this->info('------------------------------------');
+
+        $this->info('Configuring commitlint and husky ....');
+        $this->info('------------------------------------');
+        $this->info(Process::run("cd $this->workingDirectory && npx husky-init && rm $this->workingDirectory\/.husky/pre-commit")->output());
+        $this->info('------------------------------------');
+
+        $this->info('Configuring commitlint and husky ....');
+        $this->info(Process::run("cd $this->workingDirectory && rm -f $this->workingDirectory/.husky/commit-msg")->output());
+        $this->info(Process::run("cd $this->workingDirectory && npx husky add .husky/commit-msg 'npx --no-install commitlint --edit $1'")->errorOutput());
     }
 
     private function composerChanges(): void

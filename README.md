@@ -11,10 +11,20 @@ composer require elattar/prepare
 composer update
 ```
 - Initialize the newly created project by pushing the helpers
-- This Command will install the development packages that helps us like `laravel octane`, `laravel telescope`, `laravel ide-helper`, `laravel modules`, `fast paginate`, `laravel-backup` and `log-viewer`
+- This Command will install the development packages that helps us like `laravel telescope`, `laravel modules`, `fast paginate`, `commitlint` and `husky`
 
 ```shell
 php artisan elattar:initialize
+```
+
+- if you don't want to install `commitlint` package to lint you git commits, you can pass `--no-commitlint` flag
+```shell
+php artisan elattar:initialize --no-commitlint
+```
+
+- To install advanced packages like `log-viewer` you can pass `--advanced` flag
+```shell
+php artisan elattar:initialize --advanced
 ```
 
 - Then We have to publish package assets, files
